@@ -8,10 +8,10 @@
  *
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
 #include <errno.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "geometry.h"
 
@@ -19,53 +19,71 @@
 
 #define DEBUG(file, line, func, msg) fprintf(stderr, "DEBUG - %s_%d_%s: %s", file, line, func, msg);
 
-double coord_2d_dist(const coord_2d_t* a, const coord_2d_t* b){
+double coord_2d_dist(const coord_2d_t *a, const coord_2d_t *b) {
 
     /* Input Checks */
-    if(!a){
+    if (!a) {
         DEBUG(__FILE__, __LINE__, __func__, "'a' must not be NULL");
         return NAN;
     }
-    if(!b){
+    if (!b) {
         DEBUG(__FILE__, __LINE__, __func__, "'b' must not be NULL");
         return NAN;
     }
 
     /* Maths */
     return sqrt(pow((a->x - b->x), 2) + pow((a->y - b->y), 2));
-
 }
 
-bool coord_2d_eq(const coord_2d_t* a, const coord_2d_t* b){
+bool coord_2d_eq(const coord_2d_t *a, const coord_2d_t *b) {
 
     /* Equal if dist <= FUZZY_EQ */
-    if(coord_2d_dist(a, b) <= FUZZY_EQ){
+    if (coord_2d_dist(a, b) <= FUZZY_EQ) {
         return true;
-    }
-    else{
+    } else {
         return false;
     }
-
 }
 
-void coord_2d_midpoint(coord_2d_t* mid, const coord_2d_t* a, const coord_2d_t* b){
+void coord_2d_midpoint(coord_2d_t *mid, const coord_2d_t *a, const coord_2d_t *b) {
 
     /* Input Checks */
-    if(!mid){
+    if (!mid) {
         DEBUG(__FILE__, __LINE__, __func__, "'mid' must not be NULL");
         return;
     }
-    if(!a){
+    if (!a) {
         DEBUG(__FILE__, __LINE__, __func__, "'a' must not be NULL");
         return;
     }
-    if(!b){
+    if (!b) {
         DEBUG(__FILE__, __LINE__, __func__, "'b' must not be NULL");
         return;
     }
 
     /* Maths */
-    mid->x = ((a->x + b->x) / 2.0 );
-    mid->y = ((a->y + b->y) / 2.0 );
+    mid->x = ((a->x + b->x) / 2.0);
+    mid->y = ((a->y + b->y) / 2.0);
+}
+
+double coord_2d_area_triangle(const coord_2d_t *a, const coord_2d_t *b, const coord_2d_t *c) {
+    if (!a) {
+        DEBUG(__FILE__, __LINE__, __func__, "'mid' must not be NULL");
+        return 0;
+    }
+    if (!b) {
+        DEBUG(__FILE__, __LINE__, __func__, "'a' must not be NULL");
+        return 0;
+    }
+    if (!c) {
+        DEBUG(__FILE__, __LINE__, __func__, "'b' must not be NULL");
+        return 0;
+    }
+
+    double area = 0;
+	area = fabs((a->x*(b->y-c->y)+b->x*(c->y-a->y)+c->x*(a->y-b->y))/2);
+	return area;
+
+
 
 }
